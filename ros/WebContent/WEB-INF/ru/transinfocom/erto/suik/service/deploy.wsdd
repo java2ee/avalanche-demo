@@ -1,0 +1,162 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from ErtoServiceImplService WSDL service -->
+
+  <service name="ErtoServiceImplPort" provider="java:RPC" style="document" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://service.suik.erto.transinfocom.ru/"/>
+      <parameter name="wsdlServiceElement" value="ErtoServiceImplService"/>
+      <parameter name="schemaUnqualified" value="http://suik.erto.transinfocom.ru/service,http://suik.erto.transinfocom.ru/fault/,http://suik.erto.transinfocom.ru/types"/>
+      <parameter name="wsdlServicePort" value="ErtoServiceImplPort"/>
+      <parameter name="className" value="ru.transinfocom.erto.suik.service.ErtoServiceImplServiceSoapBindingSkeleton"/>
+      <parameter name="wsdlPortType" value="ErtoServiceApi"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <parameter name="allowedMethods" value="*"/>
+
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Contrct"
+        type="java:ru.transinfocom.erto.suik.types.Contrct"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Value"
+        type="java:ru.transinfocom.erto.suik.types.Value"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Transfer"
+        type="java:ru.transinfocom.erto.suik.types.Transfer"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Pern"
+        type="java:ru.transinfocom.erto.suik.types.Pern"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Area"
+        type="java:ru.transinfocom.erto.suik.types.Area"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Pere"
+        type="java:ru.transinfocom.erto.suik.types.Pere"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/service"
+        qname="ns:>loadDataResponse"
+        type="java:ru.transinfocom.erto.suik.service.LoadDataResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Invi"
+        type="java:ru.transinfocom.erto.suik.types.Invi"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Move"
+        type="java:ru.transinfocom.erto.suik.types.Move"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Neuo"
+        type="java:ru.transinfocom.erto.suik.types.Neuo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Equip"
+        type="java:ru.transinfocom.erto.suik.types.Equip"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:OsData"
+        type="java:ru.transinfocom.erto.suik.types.OsData"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Krem"
+        type="java:ru.transinfocom.erto.suik.types.Krem"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/service"
+        qname="ns:>loadDataRequest"
+        type="java:ru.transinfocom.erto.suik.service.LoadDataRequest"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Oson"
+        type="java:ru.transinfocom.erto.suik.types.Oson"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Osdan"
+        type="java:ru.transinfocom.erto.suik.types.Osdan"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://suik.erto.transinfocom.ru/types"
+        qname="ns:Neud"
+        type="java:ru.transinfocom.erto.suik.types.Neud"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>

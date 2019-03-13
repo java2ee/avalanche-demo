@@ -1,0 +1,79 @@
+<ns1:deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns1="http://xml.apache.org/axis/wsdd/">
+ <ns1:globalConfiguration>
+  <ns1:parameter name="sendMultiRefs" value="true"/>
+  <ns1:parameter name="disablePrettyXML" value="true"/>
+  <ns1:parameter name="adminPassword" value="admin"/>
+  <ns1:parameter name="attachments.Directory" value="D:\DEV\Eclipse\Projects\esma\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ros\WEB-INF\attachments"/>
+  <ns1:parameter name="dotNetSoapEncFix" value="true"/>
+  <ns1:parameter name="enableNamespacePrefixOptimization" value="false"/>
+  <ns1:parameter name="sendXMLDeclaration" value="true"/>
+  <ns1:parameter name="sendXsiTypes" value="true"/>
+  <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+  <ns1:requestFlow>
+   <ns1:handler type="java:org.apache.axis.handlers.JWSHandler">
+    <ns1:parameter name="scope" value="session"/>
+   </ns1:handler>
+   <ns1:handler type="java:org.apache.axis.handlers.JWSHandler">
+    <ns1:parameter name="scope" value="request"/>
+    <ns1:parameter name="extension" value=".jwr"/>
+   </ns1:handler>
+  </ns1:requestFlow>
+ </ns1:globalConfiguration>
+ <ns1:handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+ <ns1:handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+ <ns1:handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+ <ns1:service name="AdminService" provider="java:MSG">
+  <ns1:parameter name="allowedMethods" value="AdminService"/>
+  <ns1:parameter name="enableRemoteAdmin" value="false"/>
+  <ns1:parameter name="className" value="org.apache.axis.utils.Admin"/>
+  <ns1:namespace>http://xml.apache.org/axis/wsdd/</ns1:namespace>
+ </ns1:service>
+ <ns1:service name="Version" provider="java:RPC">
+  <ns1:parameter name="allowedMethods" value="getVersion"/>
+  <ns1:parameter name="className" value="org.apache.axis.Version"/>
+ </ns1:service>
+ <ns1:service name="ErtoServiceImplPort" provider="java:RPC" style="document" use="literal">
+  <ns1:parameter name="allowedMethods" value="*"/>
+  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+  <ns1:parameter name="wsdlPortType" value="ErtoServiceApi"/>
+  <ns1:parameter name="className" value="ru.transinfocom.erto.suik.service.ErtoServiceImplServiceSoapBindingSkeleton"/>
+  <ns1:parameter name="wsdlServicePort" value="ErtoServiceImplPort"/>
+  <ns1:parameter name="wsdlTargetNamespace" value="http://service.suik.erto.transinfocom.ru/"/>
+  <ns1:parameter name="wsdlServiceElement" value="ErtoServiceImplService"/>
+  <ns1:parameter name="schemaUnqualified" value="http://suik.erto.transinfocom.ru/service,http://suik.erto.transinfocom.ru/fault/,http://suik.erto.transinfocom.ru/types"/>
+  <ns2:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns1:Contrct" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Contrct" xmlns:ns1="http://suik.erto.transinfocom.ru/types" xmlns:ns2="http://xml.apache.org/axis/wsdd/"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns2:Value" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Value" xmlns:ns2="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns3:Transfer" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Transfer" xmlns:ns3="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns4:Pern" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Pern" xmlns:ns4="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns5:Area" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Area" xmlns:ns5="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns6:Pere" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Pere" xmlns:ns6="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns7:&gt;loadDataResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.service.LoadDataResponse" xmlns:ns7="http://suik.erto.transinfocom.ru/service"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns8:Invi" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Invi" xmlns:ns8="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns9:Move" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Move" xmlns:ns9="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns10:Neuo" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Neuo" xmlns:ns10="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns11:Equip" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Equip" xmlns:ns11="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns12:OsData" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.OsData" xmlns:ns12="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns13:Krem" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Krem" xmlns:ns13="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns14:&gt;loadDataRequest" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.service.LoadDataRequest" xmlns:ns14="http://suik.erto.transinfocom.ru/service"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns15:Oson" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Oson" xmlns:ns15="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns16:Osdan" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Osdan" xmlns:ns16="http://suik.erto.transinfocom.ru/types"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns17:Neud" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:ru.transinfocom.erto.suik.types.Neud" xmlns:ns17="http://suik.erto.transinfocom.ru/types"/>
+ </ns1:service>
+ <ns1:transport name="http">
+  <ns1:requestFlow>
+   <ns1:handler type="URLMapper"/>
+   <ns1:handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+  </ns1:requestFlow>
+  <ns1:parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <ns1:parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+  <ns1:parameter name="qs.list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <ns1:parameter name="qs.method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <ns1:parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <ns1:parameter name="qs.wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+ </ns1:transport>
+ <ns1:transport name="local">
+  <ns1:responseFlow>
+   <ns1:handler type="LocalResponder"/>
+  </ns1:responseFlow>
+ </ns1:transport>
+</ns1:deployment>

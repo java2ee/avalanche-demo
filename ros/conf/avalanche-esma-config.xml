@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<avalanche name="ESMA service" doc="http://localhost:51492/help/topic/ru.funsys.avalanche.doc/html/api" ext="xhtml">
+
+	<function class="ru.funsys.avalanche.sql.Database" name="esma" description="БД хранения результата" resource="java:/comp/env/jdbc/esma" />
+
+	<application class="ru.transset.esma.EsmaApplication" aliases="ru.transset.esma" name="ESMA" >
+		<adapter class="ru.funsys.avalanche.sql.Adapter" name="database" uri="esma" />		
+	
+		<!--  Значение атрибута name должно соответствовать имени комплексного типа в файле WSDL с учетом регистра                   -->
+		<typeData name="Osdan" sql="insert into AIS_POLLING.SCD_ASUFR_OS_LOAD values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" >
+			<!--  Значение атрибута name секции element должно соответствовать значению атрибута name соответствующего комплексного  -->
+			<!--  типа в файле WSDL с учетом регистра                                                                                -->
+			<!--  Порядок дочерних элементов element должен соответствовать порядку устанавливаемых значений в sql запросе           -->
+			<element name="bukrs" />
+			<element name="werks" />
+			<element name="anln1" />
+			<element name="anln2" />
+			<element name="anlkl" />
+			<element name="anlklTxt" />
+			<element name="txt50" />
+			<element name="invnr" />
+			<element name="zzunnum" />
+			<element name="urjhr" />
+			<element name="zzdocda" />
+			<element name="zugdt" />
+			<element name="deakt" />
+			<element name="pernr" />
+			<element name="ename" />
+			<element name="aktno" />
+			<element name="aktda" />
+			<element name="spi" />
+			<element name="xwerks" />
+			<element name="ord41" />
+			<element name="ordtx" />
+		</typeData>
+		
+		<typeData name="Move"  sql="insert into AIS_POLLING.SCD_ASUFR_OS_EXPL_LOAD values (?, ?, ?, ?, ?, ?, ?, ?)">
+		    <element name="bukrs" />
+		    <element name="werks" />
+		    <element name="anln1" />
+		    <element name="anln2" />
+		    <element name="bdatu" />
+		    <element name="adatu" />
+		    <element name="raumn" />
+		    <element name="xraumn" />
+		</typeData>
+		
+		<typeData name="Invi"  sql="insert into AIS_POLLING.SCD_ASUFR_OS_DETAILS_LOAD values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)">
+		    <element name="bukrs" />
+		    <element name="werks" />
+		    <element name="anln1" />
+		    <element name="anln2" />
+		    <element name="nomst" />
+		    <element name="text1" />
+		    <element name="text2" />
+		    <element name="text3" />
+		    <element name="text4" />
+		    <element name="text5" />
+		    <element name="text6" />
+		    <element name="text7" />
+		</typeData>
+
+	</application>
+	 
+</avalanche>

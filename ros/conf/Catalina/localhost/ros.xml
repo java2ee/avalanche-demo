@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="ros.war" path="/ros" reloadable="false" >
+          
+  <Resource  name="jdbc/esma" auth="Container" type="javax.sql.DataSource"
+             maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+	     username="user" password="password" driverClassName="org.postgresql.Driver"
+             url="jdbc:postgresql://localhost:5432/mydb"/>
+                     
+  <Resource name="avalanche/ros" auth="Container"
+            type="ru.funsys.avalanche.Avalanche"
+            factory="org.apache.naming.factory.BeanFactory" />
+
+</Context>
