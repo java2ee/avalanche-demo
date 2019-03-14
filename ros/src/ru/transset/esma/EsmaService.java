@@ -33,7 +33,7 @@ public class EsmaService {
 		Context initContext = new InitialContext();
 		// JNDI имя экземпляра Avalanche определяется в конфигурации контекста
 		// Для Tomcat полное JNDI имя - "java:comp/env/avalanche/ros" 
-		avalanche = (Avalanche) initContext.lookup(Avalanche.JNDI_CONTEXT + "/avalanche/ros");
+		avalanche = (Avalanche) initContext.lookup(Avalanche.getJndiContext() + "/avalanche/ros");
 	}
 	
 	/**
