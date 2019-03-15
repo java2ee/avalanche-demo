@@ -31,7 +31,7 @@ public class EsmaApplication extends Application {
 	private Vector<TypeData> types = new Vector<TypeData>();
 	
 	/**
-	 * Адаптер манипулятора данных 
+	 * Адаптер манипулятора данных, инициируется из файла конфигурации 
 	 */
 	public Adapter database;
 	
@@ -41,7 +41,8 @@ public class EsmaApplication extends Application {
 	public ThreadGroup group = new ThreadGroup("Executers");
 	
 	/**
-	 * Добавляет обрабатываемый тип данных
+	 * Добавляет обрабатываемый тип данных. Этот метод вызывается при обработке
+	 * файла конфигурации.
 	 * 
 	 * @param name имя типа
 	 * @param type экземпляр типа данных
@@ -76,6 +77,7 @@ public class EsmaApplication extends Application {
 	 * @param request распарсенная структура массивов сохраняемых данных
 	 */
 	private void execute(TypeData typeData, LoadDataRequest request) {
+		// Поле класса logger определено в родительском классе, инициируется из файла конфигурации
 		logger.info("Start: " + typeData.getName());
 		String name  = "get"  + toUpperFirstChar(typeData.getName());
 		Class<?> classRequest = request.getClass();
