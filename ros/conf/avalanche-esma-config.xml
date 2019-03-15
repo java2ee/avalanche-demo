@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<avalanche name="ESMA service" doc="http://localhost:51492/help/topic/ru.funsys.avalanche.doc/html/api" ext="xhtml">
+<avalanche name="ESMA service">
 
 	<function class="ru.funsys.avalanche.sql.Database" name="esma" description="БД хранения результата" resource="java:/comp/env/jdbc/esma" />
 
