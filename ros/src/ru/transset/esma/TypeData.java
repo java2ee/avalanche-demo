@@ -8,9 +8,10 @@ import java.util.Vector;
 import ru.funsys.avalanche.Brick;
 
 /**
- * РљР»Р°СЃСЃ РѕРїРёСЃР°РЅРёСЏ РІС‹РїРѕР»РЅСЏРµРјРѕРіРѕ SQL 
+ * Класс описания выполняемого SQL 
  * 
- * @author Р’Р°Р»РµСЂРёР№ Р›РёС…РѕРІСЃРєРёС…
+ * @author Валерий Лиховских
+ *
  */
 public class TypeData extends Brick {
 
@@ -20,15 +21,12 @@ public class TypeData extends Brick {
 	private static final long serialVersionUID = -2338185397126773551L;
 
 	/**
-	 * РћРїСЂРµРґРµР»СЏРµС‚ РїРѕСЂСЏРґРѕРє СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРјС‹С… Р·РЅР°С‡РµРЅРёР№ РїРѕР»РµР№ РІ SQL РІС‹СЂР°Р¶РµРЅРёРё РёР· РєРѕРјРїР»РµРєСЃРЅРѕРіРѕ С‚РёРїР°, РѕРїРёСЃР°РЅРЅРѕРіРѕ РІ WSDL 
+	 * Определяет порядок устанавливаемых значений полей в SQL выражении из комплексного типа, описанного в WSDL 
 	 */
-	private Vector<String> elements = new Vector<String>();
+	private Vector<Element> elements = new Vector<Element>();
 	
-	/**
-	 * SQL РІС‹СЂР°Р¶РµРЅРёРµ РІСЃС‚Р°РІРєРё Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ
-	 */
-	private String sql;
-	
+	private String sql; // SQL выражения INSERT, добавляющее запись в таблицу 
+
 	public String getSql() {
 		return sql;
 	}
@@ -38,12 +36,12 @@ public class TypeData extends Brick {
 	}
 
 	public boolean addElement(String name, Element element) {
-		// РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ С‚СЂРµР±СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РёРјСЏ СЌР»РµРјРµРЅС‚Р°
-		elements.add(name);
+		// для установки значения поля требуется только имя элемента
+		elements.add(element);
 		return true;
 	}
 	
-	public Vector<String> getElements() {
+	public Vector<Element> getElements() {
 		return elements;
 	}
 	

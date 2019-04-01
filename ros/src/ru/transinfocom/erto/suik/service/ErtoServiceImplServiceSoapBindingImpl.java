@@ -22,7 +22,7 @@ public class ErtoServiceImplServiceSoapBindingImpl implements ru.transinfocom.er
 			throw new RemoteException("Error ESMA", e);
 		}
 		// Далее следует сгенерированный код
-	    	return new LoadDataResponse();
-	}
+    	return new LoadDataResponse();
+    }
 
 }

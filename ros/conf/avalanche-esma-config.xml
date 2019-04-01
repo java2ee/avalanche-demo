@@ -6,11 +6,26 @@
 	<application class="ru.transset.esma.EsmaApplication" aliases="ru.transset.esma" name="ESMA" >
 		<adapter class="ru.funsys.avalanche.sql.Adapter" name="database" uri="esma" />		
 	
+		<!--  Определяет SQL выражения для получения идентификатора задания обработки данных                                         -->
+		<parameter name="sqlMax" value="select MAX(LOG_ID) from AIS_POLLING.SCD_ASUFR_LOG" />
+
+		<!--  Определяет SQL выражения для установки значения времени окончания обработки данных                                     -->
+		<parameter name="sqlUpdate" value="UPDATE ais_polling.scd_asufr_log SET log_begin = current_timestamp WHERE log_id = ?" />
+		
 		<!--  Значение атрибута name должно соответствовать имени комплексного типа в файле WSDL с учетом регистра                   -->
-		<typeData name="Osdan" sql="insert into AIS_POLLING.SCD_ASUFR_OS_LOAD values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" >
+		<!--  Значение поля max экземпляра класса TypeData устанавливается из результата выполнения запроса sqlMax                   -->
+		<typeData name="Osdan"
+		          sql="insert into AIS_POLLING.SCD_ASUFR_OS_LOAD (bukrs, werks, anln1, anln2, anlkl, anlklTxt, txt50, invnr, zzunnum, urjhr,
+		               zzdocda, zugdt, deakt, pernr, ename, aktno, aktda, spi, xwerks, ord41, ordtx, log_id) 
+		               values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" >
 			<!--  Значение атрибута name секции element должно соответствовать значению атрибута name соответствующего комплексного  -->
 			<!--  типа в файле WSDL с учетом регистра                                                                                -->
+			<!--                                                                                                                     -->
 			<!--  Порядок дочерних элементов element должен соответствовать порядку устанавливаемых значений в sql запросе           -->
+			<!--                                                                                                                     -->
+			<!--  Атрибут source определяет источник устанавливаемого значения - element (по умолчанию), typeData или application    -->
+			<!--  В классе источнике должен быть определен соответствующий метод get, например для поля "max" в классе application   -->
+			<!--  должен быть определен метод getMax()                                                                               -->
 			<element name="bukrs" />
 			<element name="werks" />
 			<element name="anln1" />
@@ -32,9 +47,11 @@
 			<element name="xwerks" />
 			<element name="ord41" />
 			<element name="ordtx" />
+			<element name="max" source="application"/> 
 		</typeData>
 		
-		<typeData name="Move"  sql="insert into AIS_POLLING.SCD_ASUFR_OS_EXPL_LOAD values (?, ?, ?, ?, ?, ?, ?, ?)">
+		<typeData name="Move"
+		    	  sql="insert into AIS_POLLING.SCD_ASUFR_OS_EXPL_LOAD (bukrs, werks, anln1, anln2, bdatu, adatu, raumn, xraumn, log_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)">
 		    <element name="bukrs" />
 		    <element name="werks" />
 		    <element name="anln1" />
@@ -43,9 +60,12 @@
 		    <element name="adatu" />
 		    <element name="raumn" />
 		    <element name="xraumn" />
+			<element name="max" source="application"/> 
 		</typeData>
 		
-		<typeData name="Invi"  sql="insert into AIS_POLLING.SCD_ASUFR_OS_DETAILS_LOAD values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)">
+		<typeData name="Invi"
+        		  sql="insert into AIS_POLLING.SCD_ASUFR_OS_DETAILS_LOAD (bukrs, werks, anln1, anln2, nomst, text1, text2, text3, text4, text5, text6, text7)
+        		       values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)">
 		    <element name="bukrs" />
 		    <element name="werks" />
 		    <element name="anln1" />
@@ -58,6 +78,7 @@
 		    <element name="text5" />
 		    <element name="text6" />
 		    <element name="text7" />
+			<element name="max" source="application"/> 
 		</typeData>
 
 	</application>

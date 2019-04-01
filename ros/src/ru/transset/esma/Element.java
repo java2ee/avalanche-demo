@@ -6,10 +6,8 @@ package ru.transset.esma;
 import ru.funsys.avalanche.Brick;
 
 /**
- * РљР»Р°СЃСЃ РїРѕР»СЏ С‚РёРїР° РґР°РЅРЅС‹С…. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ РїРѕСЂСЏРґРєР° РїРѕР»РµР№, СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРјС‹С… РІ SQL
- * РІС‹СЂР°Р¶РµРЅРёРµ
+ * @author Валерий Лиховских
  *
- * @author Р’Р°Р»РµСЂРёР№ Р›РёС…РѕРІСЃРєРёС…
  */
 public class Element extends Brick {
 
@@ -17,6 +15,19 @@ public class Element extends Brick {
 	 * 
 	 */
 	private static final long serialVersionUID = 3064193225771040927L;
+
+	/**
+	 * Описывает объект, из которого устанавливается значение поля
+	 */
+	private String source = "Element";
+	
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
 
 	@Override
 	public void done() {

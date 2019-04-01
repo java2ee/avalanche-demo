@@ -5,18 +5,19 @@ package ru.transset.esma;
 
 import java.lang.reflect.Method;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.util.Enumeration;
 import java.util.Vector;
+
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import ru.funsys.avalanche.Application;
 import ru.funsys.avalanche.sql.Adapter;
 import ru.transinfocom.erto.suik.service.LoadDataRequest;
 
 /**
- * РљР»Р°СЃСЃ РїСЂРёР»РѕР¶РµРЅРёСЏ, РѕР±СЂР°Р±Р°С‚С‹РІР°СЋС‰РёР№ РїРѕР»СѓС‡РµРЅРЅС‹Рµ СЃРµСЂРІРёСЃРѕРј РґР°РЅРЅС‹Рµ Рё СЃРѕС…СЂР°РЅСЏСЋС‰РёР№ РёС…
- * РІ С‚Р°Р±Р»РёС†С‹ Р‘Р”
+ * @author Валерий Лиховских
  *
- * @author Р’Р°Р»РµСЂРёР№ Р›РёС…РѕРІСЃРєРёС…
  */
 public class EsmaApplication extends Application {
 
@@ -25,87 +26,150 @@ public class EsmaApplication extends Application {
 	 */
 	private static final long serialVersionUID = 2109051805575507331L;
 
+	public static final String SQL_MAX = "sqlMax";
+	public static final String SQL_UPDATE = "sqlUpdate";
+	
 	/**
-	 * Р’РµРєС‚РѕСЂ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹С… С‚РёРїРѕРІ РґР°РЅРЅС‹С… 
+	 * Вектор обрабатываемых типов данных 
 	 */
 	private Vector<TypeData> types = new Vector<TypeData>();
 	
 	/**
-	 * РђРґР°РїС‚РµСЂ РјР°РЅРёРїСѓР»СЏС‚РѕСЂР° РґР°РЅРЅС‹С… 
+	 * Адаптер манипулятора данных 
 	 */
 	public Adapter database;
 	
 	/**
-	 * Р“СЂСѓРїРїР° РїРѕС‚РѕРєРѕРІ РѕР±СЂР°Р±РѕС‚РєРё РїРѕР»СѓС‡РµРЅРЅС‹С… С‚РёРїРѕРІ РґР°РЅРЅС‹С… 
+	 * Группа потоков обработки полученных типов данных 
 	 */
 	public ThreadGroup group = new ThreadGroup("Executers");
 	
 	/**
-	 * Р”РѕР±Р°РІР»СЏРµС‚ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
+	 * Идентификатор загрузки 
+	 */
+	private int max;
+	
+	/**
+	 * Счетчик завершившихся потоков 
+	 */
+	private int counter = 0;
+	
+	/**
+	 * Добавляет обрабатываемый тип данных
 	 * 
-	 * @param name РёРјСЏ С‚РёРїР°
-	 * @param type СЌРєР·РµРјРїР»СЏСЂ С‚РёРїР° РґР°РЅРЅС‹С…
-	 * @return {@code true}, РµСЃР»Рё С‚РёРї РґР°РЅРЅС‹С… СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ, РёРЅР°С‡Рµ {@code false} 
+	 * @param name имя типа
+	 * @param type экземпляр типа данных
+	 * @return {@code true}, если тип данных успешно добавлен, иначе {@code false} 
 	 */
 	public boolean addTypeData(String name, TypeData type) {
 		types.add(type);
 		return true;
 	}
 	
+	public int getMax() {
+		return max;
+	}
+	
+	private boolean isWait() {
+		return counter < types.size(); 
+	}
+	
 	/**
-	 * РЎРѕС…СЂР°РЅРµРЅРёРµ СЂР°СЃРїР°СЂСЃРµРЅРЅРѕРіРѕ Р·Р°РїСЂРѕСЃР° РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ РѕР±СЉРµРєС‚РѕРІ РєР»Р°СЃСЃРѕРІ РІ Р‘Р”
+	 * Сохранение распарсенного запроса в структуру объектов классов в БД
 	 *  
-	 * @param request СЂР°СЃРїР°СЂСЃРµРЅРЅР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° РјР°СЃСЃРёРІРѕРІ СЃРѕС…СЂР°РЅСЏРµРјС‹С… РґР°РЅРЅС‹С…
+	 * @param request распарсенная структура массивов сохраняемых данных
 	 */
 	public void store(LoadDataRequest request) {
+		if (types.size() == 0) {
+			logger.warn("Список обработчиков структур пуст!");
+			return;
+		}
+		try {
+			ResultSet resultSet = database.select(getParameter(SQL_MAX).getValue(), (Object[]) null);
+			if (resultSet.next()) {
+				max = resultSet.getInt(1);
+			}
+		} catch (Exception e) {
+			logger.error("Ошибка чтения идентификатора загрузки!", e);
+			return;
+		}
+		
 		for (Enumeration<TypeData> enumeration = types.elements(); enumeration.hasMoreElements(); ) {
 			TypeData typeData = enumeration.nextElement();
 			Thread thread = new Thread(group, new Runnable() {
-					public void run() {
-						execute(typeData, request);
-					}
-			    }, Thread.currentThread().getName() + '-' + typeData.getName());
+				public void run() {
+					execute(typeData, request);
+				}
+			}, Thread.currentThread().getName() + '-' + typeData.getName());
 			thread.start();
+		}
+
+		while (isWait()) {
+			synchronized (this) {
+				try {
+					wait(1500L);
+				} catch (Exception e) {
+				}
+			}
+		}
+		
+		try {
+			database.execute(getParameter(SQL_UPDATE).getValue(), max);
+			logger.info("Обработка завершена!");
+		} catch (Exception e) {
+			logger.error("При выполнении выражения UPDATE произошла ошибка!", e);
 		}
 	}
 
 	/**
-	 * РЎРѕС…СЂР°РЅРёС‚СЊ РїРµСЂРµРґР°РЅРЅС‹Р№ РІ РїР°СЂР°РјРµС‚СЂРµ С‚РёРї РґР°РЅРЅС‹С… РІ Р‘Р”
+	 * Сохранить переданный в параметре тип данных в БД
 	 * 
-	 * @param typeData СЃРѕС…СЂР°РЅСЏРµРјС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
-	 * @param request СЂР°СЃРїР°СЂСЃРµРЅРЅР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° РјР°СЃСЃРёРІРѕРІ СЃРѕС…СЂР°РЅСЏРµРјС‹С… РґР°РЅРЅС‹С…
+	 * @param typeData сохраняемый тип данных
+	 * @param request распарсенная структура массивов сохраняемых данных
 	 */
 	private void execute(TypeData typeData, LoadDataRequest request) {
 		logger.info("Start: " + typeData.getName());
 		String name  = "get"  + toUpperFirstChar(typeData.getName());
 		Class<?> classRequest = request.getClass();
 		try {
-			// РњРµС‚РѕРґ, РІРѕР·РІСЂР°С‰Р°СЋС‰РёР№ РјР°СЃСЃРёРІ Р·Р°РїРёСЃРµР№ С‚РёРїР° РґР°РЅРЅС‹С…
+			Class<?> classTypeData = typeData.getClass();
+			Class<?> classApplication = getClass();
+			
 			Method method = classRequest.getMethod(name,  (Class[]) null);
-			// РњР°СЃСЃРёРІ Р·Р°РїРёСЃРµР№ С‚РёРїР° РґР°РЅРЅС‹С…
 			Object[] records = (Object[]) method.invoke(request, (Object[]) null);
 			if (records != null) {
 				Class<?> classObject = null;
 				for (int index = 0; index < records.length; index++) {
-					// Р’РµРєС‚РѕСЂ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРјС‹С… Р·РЅР°С‡РµРЅРёР№ РІ SQL РІС‹СЂР°Р¶РµРЅРёРµ
 					Vector<Object> values = new Vector<Object>();
 					Object record = records[index];
 					if (classObject == null) classObject = record.getClass();
-					for (Enumeration<String> e = typeData.getElements().elements(); e.hasMoreElements(); ) {
-						String nameMethod = "get" + toUpperFirstChar(e.nextElement());
-						Method fieldMethod = classObject.getMethod(nameMethod, (Class[]) null);
-						Object value = fieldMethod.invoke(record, (Object[]) null);
+					for (Enumeration<Element> e = typeData.getElements().elements(); e.hasMoreElements(); ) {
+						Element element = e.nextElement();
+						String nameMethod = "get" + toUpperFirstChar(element.getName());
+						Method fieldMethod;
+						Object value;
+						switch (element.getSource()) {
+						case "application":
+							fieldMethod = classApplication.getMethod(nameMethod, (Class[]) null);
+							value = fieldMethod.invoke(this, (Object[]) null);
+							break;
+						case "typeData":
+							fieldMethod = classTypeData.getMethod(nameMethod, (Class[]) null);
+							value = fieldMethod.invoke(typeData, (Object[]) null);
+							break;
+						default:
+							fieldMethod = classObject.getMethod(nameMethod, (Class[]) null);
+							value = fieldMethod.invoke(record, (Object[]) null);
+						}
 						if (value instanceof java.util.Date) {
-							// РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ С‚РёРї java.util.Date РІ С‚РёРї java.sql.Date 
+							// преобразовать тип java.util.Date в тип java.sql.Date 
 							value = new Date(((java.util.Date) value).getTime());
 						}
 						values.add(value);
 					}
 					try {
-						// Р’С‹РїРѕР»РЅРёС‚СЊ SQL РІС‹СЂР°Р¶РµРЅРёРµ
 						database.execute(typeData.getSql(), values);
 					} catch (Exception e) {
-						// Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃРѕРѕР±С‰РµРЅРёСЏ РѕР± РѕС€РёР±РєРµ СЃ РїРѕРґСЂРѕР±РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРµР№
 						StringBuilder builder = new StringBuilder();
 						builder.append("Error insert record[").append(index).append("]\r\n");
 						int i = 0;
@@ -121,6 +185,10 @@ public class EsmaApplication extends Application {
 			logger.error("Error for type " + typeData.getName(), e);
 		}
 		logger.info("Stop: " + typeData.getName());
+		counter++;
+		synchronized (this) {
+			notifyAll();
+		}
 	}
 	
 }
