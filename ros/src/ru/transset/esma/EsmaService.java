@@ -10,7 +10,7 @@ import ru.funsys.avalanche.Avalanche;
 import ru.transinfocom.erto.suik.service.LoadDataRequest;
 
 /**
- * @author likhovskikh_vv
+ * @author Р’Р°Р»РµСЂРёР№ Р›РёС…РѕРІСЃРєРёС…
  *
  */
 public class EsmaService {
@@ -23,19 +23,15 @@ public class EsmaService {
 	
 	private void init() throws Exception {
 		Context initContext = new InitialContext();
-<<<<<<< HEAD
-		// JNDI имя экземпляра Avalanche определяется в конфигурации контекста
-		// Для Tomcat полное JNDI имя - "java:comp/env/avalanche/ros" 
-=======
 		// JNDI РёРјСЏ СЌРєР·РµРјРїР»СЏСЂР° Avalanche РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РІ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РєРѕРЅС‚РµРєСЃС‚Р°
 		// Р”Р»СЏ Tomcat РїРѕР»РЅРѕРµ JNDI РёРјСЏ - "java:comp/env/avalanche/ros" 
->>>>>>> branch 'master' of https://github.com/java2ee/avalanche-demo.git
+
 		avalanche = (Avalanche) initContext.lookup(Avalanche.getJndiContext() + "/avalanche/ros");
 	}
 	
 	public void store(LoadDataRequest request) throws Exception {
 		init();
-		// Имя и тип приложения должно соответствовать значениям атрибутов name и class в файле конфигурации avalanche 
+		// РРјСЏ Рё С‚РёРї РїСЂРёР»РѕР¶РµРЅРёСЏ РґРѕР»Р¶РЅРѕ СЃРѕРѕС‚РІРµС‚СЃС‚РІРѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёСЏРј Р°С‚СЂРёР±СѓС‚РѕРІ name Рё class РІ С„Р°Р№Р»Рµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё avalanche 
 		EsmaApplication app = (EsmaApplication) avalanche.getApplication("ESMA");
 		app.store(request);
 	}
