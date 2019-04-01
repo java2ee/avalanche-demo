@@ -9,14 +9,13 @@ import java.sql.ResultSet;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import ru.funsys.avalanche.Application;
 import ru.funsys.avalanche.sql.Adapter;
 import ru.transinfocom.erto.suik.service.LoadDataRequest;
 
 /**
- * @author Валерий Лиховских
+ * @author Р’Р°Р»РµСЂРёР№ Р›РёС…РѕРІСЃРєРёС…
  *
  */
 public class EsmaApplication extends Application {
@@ -30,45 +29,36 @@ public class EsmaApplication extends Application {
 	public static final String SQL_UPDATE = "sqlUpdate";
 	
 	/**
-	 * Вектор обрабатываемых типов данных 
+	 * Р’РµРєС‚РѕСЂ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹С… С‚РёРїРѕРІ РґР°РЅРЅС‹С… 
 	 */
 	private Vector<TypeData> types = new Vector<TypeData>();
 	
 	/**
-<<<<<<< HEAD
-	 * Адаптер манипулятора данных 
-=======
-	 * РђРґР°РїС‚РµСЂ РјР°РЅРёРїСѓР»СЏС‚РѕСЂР° РґР°РЅРЅС‹С…, РёРЅРёС†РёРёСЂСѓРµС‚СЃСЏ РёР· С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё 
->>>>>>> branch 'master' of https://github.com/java2ee/avalanche-demo.git
+	 * РђРґР°РїС‚РµСЂ РјР°РЅРёРїСѓР»СЏС‚РѕСЂР° РґР°РЅРЅС‹С… 
 	 */
 	public Adapter database;
 	
 	/**
-	 * Группа потоков обработки полученных типов данных 
+	 * Р“СЂСѓРїРїР° РїРѕС‚РѕРєРѕРІ РѕР±СЂР°Р±РѕС‚РєРё РїРѕР»СѓС‡РµРЅРЅС‹С… С‚РёРїРѕРІ РґР°РЅРЅС‹С… 
 	 */
 	public ThreadGroup group = new ThreadGroup("Executers");
 	
 	/**
-<<<<<<< HEAD
-	 * Идентификатор загрузки 
+	 * РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РіСЂСѓР·РєРё 
 	 */
 	private int max;
 	
 	/**
-	 * Счетчик завершившихся потоков 
+	 * РЎС‡РµС‚С‡РёРє Р·Р°РІРµСЂС€РёРІС€РёС…СЃСЏ РїРѕС‚РѕРєРѕРІ 
 	 */
 	private int counter = 0;
 	
 	/**
-	 * Добавляет обрабатываемый тип данных
-=======
-	 * Р”РѕР±Р°РІР»СЏРµС‚ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹Р№ С‚РёРї РґР°РЅРЅС‹С…. Р­С‚РѕС‚ РјРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ
-	 * С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё.
->>>>>>> branch 'master' of https://github.com/java2ee/avalanche-demo.git
+	 * Р”РѕР±Р°РІР»СЏРµС‚ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
 	 * 
-	 * @param name имя типа
-	 * @param type экземпляр типа данных
-	 * @return {@code true}, если тип данных успешно добавлен, иначе {@code false} 
+	 * @param name РёРјСЏ С‚РёРїР°
+	 * @param type СЌРєР·РµРјРїР»СЏСЂ С‚РёРїР° РґР°РЅРЅС‹С…
+	 * @return {@code true}, РµСЃР»Рё С‚РёРї РґР°РЅРЅС‹С… СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ, РёРЅР°С‡Рµ {@code false} 
 	 */
 	public boolean addTypeData(String name, TypeData type) {
 		types.add(type);
@@ -84,13 +74,13 @@ public class EsmaApplication extends Application {
 	}
 	
 	/**
-	 * Сохранение распарсенного запроса в структуру объектов классов в БД
+	 * РЎРѕС…СЂР°РЅРµРЅРёРµ СЂР°СЃРїР°СЂСЃРµРЅРЅРѕРіРѕ Р·Р°РїСЂРѕСЃР° РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ РѕР±СЉРµРєС‚РѕРІ РєР»Р°СЃСЃРѕРІ РІ Р‘Р”
 	 *  
-	 * @param request распарсенная структура массивов сохраняемых данных
+	 * @param request СЂР°СЃРїР°СЂСЃРµРЅРЅР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° РјР°СЃСЃРёРІРѕРІ СЃРѕС…СЂР°РЅСЏРµРјС‹С… РґР°РЅРЅС‹С…
 	 */
 	public void store(LoadDataRequest request) {
 		if (types.size() == 0) {
-			logger.warn("Список обработчиков структур пуст!");
+			logger.warn("РЎРїРёСЃРѕРє РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРІ СЃС‚СЂСѓРєС‚СѓСЂ РїСѓСЃС‚!");
 			return;
 		}
 		try {
@@ -99,7 +89,7 @@ public class EsmaApplication extends Application {
 				max = resultSet.getInt(1);
 			}
 		} catch (Exception e) {
-			logger.error("Ошибка чтения идентификатора загрузки!", e);
+			logger.error("РћС€РёР±РєР° С‡С‚РµРЅРёСЏ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР° Р·Р°РіСЂСѓР·РєРё!", e);
 			return;
 		}
 		
@@ -124,20 +114,19 @@ public class EsmaApplication extends Application {
 		
 		try {
 			database.execute(getParameter(SQL_UPDATE).getValue(), max);
-			logger.info("Обработка завершена!");
+			logger.info("РћР±СЂР°Р±РѕС‚РєР° Р·Р°РІРµСЂС€РµРЅР°!");
 		} catch (Exception e) {
-			logger.error("При выполнении выражения UPDATE произошла ошибка!", e);
+			logger.error("РџСЂРё РІС‹РїРѕР»РЅРµРЅРёРё РІС‹СЂР°Р¶РµРЅРёСЏ UPDATE РїСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°!", e);
 		}
 	}
 
 	/**
-	 * Сохранить переданный в параметре тип данных в БД
+	 * РЎРѕС…СЂР°РЅРёС‚СЊ РїРµСЂРµРґР°РЅРЅС‹Р№ РІ РїР°СЂР°РјРµС‚СЂРµ С‚РёРї РґР°РЅРЅС‹С… РІ Р‘Р”
 	 * 
-	 * @param typeData сохраняемый тип данных
-	 * @param request распарсенная структура массивов сохраняемых данных
+	 * @param typeData СЃРѕС…СЂР°РЅСЏРµРјС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
+	 * @param request СЂР°СЃРїР°СЂСЃРµРЅРЅР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° РјР°СЃСЃРёРІРѕРІ СЃРѕС…СЂР°РЅСЏРµРјС‹С… РґР°РЅРЅС‹С…
 	 */
 	private void execute(TypeData typeData, LoadDataRequest request) {
-		// РџРѕР»Рµ РєР»Р°СЃСЃР° logger РѕРїСЂРµРґРµР»РµРЅРѕ РІ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРј РєР»Р°СЃСЃРµ, РёРЅРёС†РёРёСЂСѓРµС‚СЃСЏ РёР· С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё
 		logger.info("Start: " + typeData.getName());
 		String name  = "get"  + toUpperFirstChar(typeData.getName());
 		Class<?> classRequest = request.getClass();
@@ -172,7 +161,7 @@ public class EsmaApplication extends Application {
 							value = fieldMethod.invoke(record, (Object[]) null);
 						}
 						if (value instanceof java.util.Date) {
-							// преобразовать тип java.util.Date в тип java.sql.Date 
+							// РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ С‚РёРї java.util.Date РІ С‚РёРї java.sql.Date 
 							value = new Date(((java.util.Date) value).getTime());
 						}
 						values.add(value);
