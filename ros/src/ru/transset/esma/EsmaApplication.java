@@ -35,7 +35,11 @@ public class EsmaApplication extends Application {
 	private Vector<TypeData> types = new Vector<TypeData>();
 	
 	/**
+<<<<<<< HEAD
 	 * Адаптер манипулятора данных 
+=======
+	 * РђРґР°РїС‚РµСЂ РјР°РЅРёРїСѓР»СЏС‚РѕСЂР° РґР°РЅРЅС‹С…, РёРЅРёС†РёРёСЂСѓРµС‚СЃСЏ РёР· С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё 
+>>>>>>> branch 'master' of https://github.com/java2ee/avalanche-demo.git
 	 */
 	public Adapter database;
 	
@@ -45,6 +49,7 @@ public class EsmaApplication extends Application {
 	public ThreadGroup group = new ThreadGroup("Executers");
 	
 	/**
+<<<<<<< HEAD
 	 * Идентификатор загрузки 
 	 */
 	private int max;
@@ -56,6 +61,10 @@ public class EsmaApplication extends Application {
 	
 	/**
 	 * Добавляет обрабатываемый тип данных
+=======
+	 * Р”РѕР±Р°РІР»СЏРµС‚ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹Р№ С‚РёРї РґР°РЅРЅС‹С…. Р­С‚РѕС‚ РјРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ
+	 * С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё.
+>>>>>>> branch 'master' of https://github.com/java2ee/avalanche-demo.git
 	 * 
 	 * @param name имя типа
 	 * @param type экземпляр типа данных
@@ -128,6 +137,7 @@ public class EsmaApplication extends Application {
 	 * @param request распарсенная структура массивов сохраняемых данных
 	 */
 	private void execute(TypeData typeData, LoadDataRequest request) {
+		// РџРѕР»Рµ РєР»Р°СЃСЃР° logger РѕРїСЂРµРґРµР»РµРЅРѕ РІ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРј РєР»Р°СЃСЃРµ, РёРЅРёС†РёРёСЂСѓРµС‚СЃСЏ РёР· С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё
 		logger.info("Start: " + typeData.getName());
 		String name  = "get"  + toUpperFirstChar(typeData.getName());
 		Class<?> classRequest = request.getClass();

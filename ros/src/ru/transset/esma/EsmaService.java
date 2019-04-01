@@ -23,8 +23,13 @@ public class EsmaService {
 	
 	private void init() throws Exception {
 		Context initContext = new InitialContext();
+<<<<<<< HEAD
 		// JNDI èìÿ ýêçåìïëÿðà Avalanche îïðåäåëÿåòñÿ â êîíôèãóðàöèè êîíòåêñòà
 		// Äëÿ Tomcat ïîëíîå JNDI èìÿ - "java:comp/env/avalanche/ros" 
+=======
+		// JNDI Ð¸Ð¼Ñ ÑÐºÐ·ÐµÐ¼Ð¿Ð»ÑÑ€Ð° Avalanche Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÑ‚ÑÑ Ð² ÐºÐ¾Ð½Ñ„Ð¸Ð³ÑƒÑ€Ð°Ñ†Ð¸Ð¸ ÐºÐ¾Ð½Ñ‚ÐµÐºÑÑ‚Ð°
+		// Ð”Ð»Ñ Tomcat Ð¿Ð¾Ð»Ð½Ð¾Ðµ JNDI Ð¸Ð¼Ñ - "java:comp/env/avalanche/ros" 
+>>>>>>> branch 'master' of https://github.com/java2ee/avalanche-demo.git
 		avalanche = (Avalanche) initContext.lookup(Avalanche.getJndiContext() + "/avalanche/ros");
 	}
 	
