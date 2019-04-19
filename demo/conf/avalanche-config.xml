@@ -1,47 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <avalanche name="Demo Application">
 
+	<!-- Определение RMI интерфеса, "смотрит" на собственный локальный RMI коннектор          -->
 	<interface name="rmi-interface" uri="rmi://localhost:23000/rmi-connector" />
 
+	<!-- Определение HTTP интерфеса, "смотрит" на собственный локальный HTTP коннектор        -->
 	<interface name="http-interface" uri="http://localhost:8080/demo/connector/http-connector" />
 
+	<!-- Определение HADR интерфеса высокой доступности                                       -->
 	<hadr name="hadr-interface" >
 		<link name="http-interface" />
 		<link name="rmi-interface" />
 	</hadr>
 
+	<!-- Определение функции                                                                 -->
 	<function class="ru.funsys.demo.avalanche.DemoFunction" name="info-function" description="Сведения об узле системы" />
 
+	<!-- Определение каскадной функции                                                       -->
 	<function class="ru.funsys.demo.avalanche.DemoCascadeFunction" name="cascade-info" description="Каскадная функция">
 		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="info" uri="info-function" />
 		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="http-info" uri="http-interface/info" />
 		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="rmi-info" uri="rmi-interface/info" />
 	</function>
 
+	<!-- Определение приложения, вызывающее локальную функцию                               -->
 	<application class="ru.funsys.demo.avalanche.DemoApplication" name="DemoApp" >
 		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="info" uri="info-function" />
 	</application>
 	 
+	<!-- Определение приложения, вызывающее удаленную функцию по RMI протоколу              -->
 	<application class="ru.funsys.demo.avalanche.DemoApplication" name="RMIApp" >
 		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="info" uri="rmi-interface/info" />
 	</application>
 	 
+	<!-- Определение приложения, вызывающее удаленную функцию по HTTP протоколу             -->
 	<application class="ru.funsys.demo.avalanche.DemoApplication" name="HTTPApp" >
 		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="info" uri="http-interface/info" />
 	</application>
 	 
+	<!-- Определение приложения, вызывающее локальную каскадную функцию                     -->
 	<application class="ru.funsys.demo.avalanche.DemoApplication" name="CascadeApp" description="Каскадное приложение">
 		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="info" uri="cascade-info" />
 	</application>
 	 
+	<!-- Определение приложения, вызывающее функцию "зарезервированную" на двух узлах       -->
 	<application class="ru.funsys.demo.avalanche.DemoApplication" name="HADRApp" >
 		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="info" uri="hadr-interface/info" />
 	</application>
 	 
+	<!-- Определение RMI коннектора                                                         -->
 	<connector class="RMIConnector" name="rmi-connector" port="23000" >
 		<publish name="info" function="info-function" />
 	</connector>
 
+	<!-- Определение HTTP коннектора                                                        -->
 	<connector class="HTTPConnector" name="http-connector" >
 		<publish name="info" function="info-function" />
 	</connector>
