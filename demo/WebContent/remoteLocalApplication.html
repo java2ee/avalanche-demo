@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Конфигурирование локального приложения (удаленный вызов)</title>
+</head>
+<body>
+<h1>Конфигурирование локального приложения (удаленный вызов)</h1>
+
+<p>
+Для обеспечения вызова в локальном приложении методов функций удаленного сервера 
+в его конфигурацию необходимо добавить секцию &lt;interface&gt;, в которой указываются
+параметры подключения к удаленному серверу. В атрибуте <b>uri</b> сгруппированы все
+параметры соединения с удаленным коннектором.
+</p>
+
+<p>
+Пример секции &lt;interface&gt; для протокола RMI:
+</p>
+<pre class="displayxml">
+	&lt;interface <keyword>name=</keyword><string>"rmi-interface"</string> <keyword>uri=</keyword><string>"rmi://DNS-имя-сервера:23000/rmi-connector"</string> /&gt;
+</pre>
+
+<p>
+Пример секции &lt;interface&gt; для протокола HTTP:
+</p>
+<pre class="displayxml">
+	&lt;interface <keyword>name=</keyword><string>"http-interface"</string> <keyword>uri=</keyword><string>"http://DNS-имя-сервера:8080/имя-контекста/имя-ресурса/http-connector"</string> /&gt;
+</pre>
+
+<p>
+Далее в секции &lt;application&gt;, которая будет использоваться для доступа к удаленной функции
+необходимо определить адаптер с составным атрибутом <b>uri</b>. В этом атрибуте указываются два
+имени через разделитель. Первое - имя локального интерфейса, второе -  имя удаленной функции, под которым
+она известна удаленному коннектору.  
+</p>
+
+<p>
+Пример секций &lt;application&gt; с интерфейсами, сконфигурированными на использование различных
+протоколов:
+</p>
+<pre class="displayxml">
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name</keyword>=<string>"RMIApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"rmi-interface/info"</string> /&gt;
+
+	&lt;/application&gt;
+
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name</keyword>=<string>"HTTPApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"http-interface/info"</string> /&gt;
+
+	&lt;/application&gt;
+</pre>
+
+</body>
+</html>

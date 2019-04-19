@@ -1,0 +1,68 @@
+p {
+	display: block;
+	text-indent: 20px;
+	text-align: justify;
+}
+
+.displaycode {
+    width: 780px;
+    margin-top: 0;
+    margin-bottom: 6px !important;
+    border: 1px solid #cccccc;
+    padding: 5px 10px 5px 3px !important;
+    font-family: "Andale Mono", "Lucida Console", Monaco, Liberation, fixed, monospace;
+    font-size: 11px;
+    overflow: auto;
+    background: #F7F7F7 !important;
+    color: #000000;
+    clear: right;
+}
+
+.displayxml {
+    width: 780px;
+    margin-top: 0;
+    margin-bottom: 6px !important;
+    border: 1px solid #cccccc;
+    padding: 5px 10px 5px 3px !important;
+    font-family: "Andale Mono", "Lucida Console", Monaco, Liberation, fixed, monospace;
+    font-size: 11px;
+    overflow: auto;
+    background: #F7F7F7 !important;
+    color: #3f7f56;
+    clear: right;
+}
+
+text {
+    color: black;
+}
+
+field {
+    color: #0000a6;
+}
+
+tag {
+	font-weight: bold;
+	color: #7fa9d9;
+}
+
+tagJSP {
+	font-weight: bold;
+	color: #bf5f3f;
+}
+
+string {
+	color: #2a00ff;
+}
+
+comment {
+    color: #3f5fd9;
+}
+
+comment-line {
+    color: #3f7f56;
+}
+
+keyword {
+	font-weight: bold;
+    color: #7f0055;
+}

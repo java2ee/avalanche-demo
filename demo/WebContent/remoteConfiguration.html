@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Конфигурационные файлы приложения (удаленный вызов)</title>
+</head>
+<body>
+<h1>Конфигурационные файлы приложения (удаленный вызов)</h1>
+
+<p>
+Пример конфигурационного файла <b>config-avalanche.xml</b> в котором определено приложение
+локального вызова функции, приложения удаленного вызова функций по протоколам
+RMI и HTTP. Удаленные вызовы функций смоделированы вызовом собственных локальных коннекторов по
+протоколам RMI и HTTP (используется адрес <b>localhost</b>).
+</p>
+<pre class="displayxml">
+&lt;?xml <keyword>version=</keyword><string>"1.0"</string> <keyword>encoding=</keyword><string>"UTF-8"</string>?&gt;
+&lt;avalanche <keyword>name=</keyword><string>"Demo Application"</string>&gt;
+
+	&lt;function <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoFunction"</string> <keyword>name=</keyword><string>"info-function"</string> /&gt;
+
+	&lt;interface <keyword>name=</keyword><string>"rmi-interface"</string> <keyword>uri=</keyword><string>"rmi://localhost:23000/rmi-connector"</string> /&gt;
+
+	&lt;interface <keyword>name=</keyword><string>"http-interface"</string> <keyword>uri=</keyword><string>"http://localhost:8080/demo/connector/http-connector"</string> /&gt;
+	
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"DemoApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"info-function"</string> /&gt;
+
+	&lt;/application&gt;
+	
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"RMIApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"rmi-interface/info"</string> /&gt;
+
+	&lt;/application&gt;
+	
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"HTTPApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"http-interface/info"</string> /&gt;
+
+	&lt;/application&gt;
+	
+	&lt;connector <keyword>class=</keyword><string>"RMIConnector"</string> <keyword>name=</keyword><string>"info-connector"</string> <keyword>port=</keyword><string>"23000"</string> &gt;
+	
+		&lt;publish <keyword>name=</keyword><string>"info"</string> <keyword>function=</keyword><string>"info-function"</string> /&gt;
+		
+	&lt;/connector&gt;
+
+	&lt;connector <keyword>class=</keyword><string>"HTTPConnector"</string> <keyword>name=</keyword><string>"info-connector"</string>  &gt;
+	
+		&lt;publish <keyword>name=</keyword><string>"info"</string> <keyword>function=</keyword><string>"info-function"</string> /&gt;
+		
+	&lt;/connector&gt;
+
+&lt;/avalanche&gt;
+</pre>
+
+<p>
+Для обеспечения работоспособности вызовов удаленных функций по HTTP протоколу в файл web.xml необходимо
+добавить секцию &lt;multipart-config&gt;. Пример файла <b>web.xml</b>
+</p>
+<pre class="displayxml">
+&lt;?xml <keyword>version=</keyword><string>"1.0"</string> <keyword>encoding=</keyword><string>"UTF-8"</string>?&gt;
+&lt;web-app <keyword>xmlns:xsi=</keyword><string>"http://www.w3.org/2001/XMLSchema-instance"</string> <keyword>xmlns</keyword>=<string>"http://java.sun.com/xml/ns/javaee"</string> <keyword>xsi:schemaLocation=</keyword><string>"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</string> <keyword>id</keyword>=<string>"WebApp_ID"</string> <keyword>version=</keyword><string>"3.0"</string>&gt;
+
+	&lt;display-name&gt;<text>Demo Avalanche</text>&lt;/display-name&gt;
+	&lt;description&gt;
+		<text>Демонстрационное приложение с использованием framework Avalanche</text>
+	&lt;/description&gt;
+
+	&lt;welcome-file-list&gt;
+		&lt;welcome-file&gt;<text>index.html</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>index.htm</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>index.jsp</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>default.html</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>default.htm</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>default.jsp</text>&lt;/welcome-file&gt;
+	&lt;/welcome-file-list&gt;
+
+	&lt;servlet&gt;
+		&lt;display-name&gt;<text>AvalancheServlet</text>&lt;/display-name&gt;
+		&lt;servlet-name&gt;<text>AvalancheServlet</text>&lt;/servlet-name&gt;
+		&lt;servlet-class&gt;<text>ru.funsys.servlet.http.AvalancheServlet</text>&lt;/servlet-class&gt;
+		&lt;init-param&gt;
+			&lt;param-name&gt;<text>config-avalanche</text>&lt;/param-name&gt;
+			&lt;param-value&gt;<text>${catalina.base}/conf/config-avalanche.xml</text>&lt;/param-value&gt;
+		&lt;/init-param&gt;
+		&lt;init-param&gt;
+			&lt;param-name&gt;<text>config-log4j</text>&lt;/param-name&gt;
+			&lt;param-value&gt;<text>${catalina.base}/conf/config-log4j.xml</text>&lt;/param-value&gt;
+		&lt;/init-param&gt;
+		&lt;load-on-startup&gt;<text>1</text>&lt;/load-on-startup&gt;
+		&lt;multipart-config&gt;
+			<comment>&lt;!-- 50MB max --&gt;</comment>
+			&lt;max-file-size&gt;</text>52428800</text>&lt;/max-file-size&gt;
+			&lt;max-request-size&gt;<text>52428800</text>&lt;/max-request-size&gt;
+			&lt;file-size-threshold&gt;<text>0</text>&lt;/file-size-threshold&gt;
+		&lt;/multipart-config&gt;
+	&lt;/servlet&gt;
+
+	&lt;servlet-mapping&gt;
+		&lt;servlet-name&gt;<text>AvalancheServlet</text>&lt;/servlet-name&gt;
+		&lt;url-pattern&gt;<text>/connector/*</text>&lt;/url-pattern&gt;
+	&lt;/servlet-mapping&gt;
+
+&lt;/web-app&gt;
+</pre>
+
+<p>
+При публикации демонстрационного приложения на другой сервер необходимо отредактировать 
+значения атрибута <b>uri</b> в секциях &lt;interface&gt; для обеспечения вызовов функций удаленных
+серверов. 
+</p>
+
+
+</body>
+</html>

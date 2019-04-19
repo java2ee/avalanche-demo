@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Реализация JSP-страницы (HADR интерфейс)</title>
+</head>
+<body>
+<h1>Реализация JSP-страницы (HADR интерфейс)</h1>
+
+<p>
+В модификации кода страницы JSP так же нет какой либо необходимости. Для сохранения 
+работоспособности ранее реализованной JSP страница, сделана ее другая копия, в которой
+необходимо изменить имя используемого экземпляра класса приложения (Application) c DemoApp
+на HADRApp.
+</p>
+
+<p>
+Повторные запросы этой страницы будут приводить к вызову функции getInfo() c
+другого сервера.
+</p>
+
+<pre class="displayxml">
+<tagJSP>&lt;%@</tagJSP> page <keyword>import=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string><tagJSP>%&gt;</tagJSP>
+<tagJSP>&lt;%@</tagJSP> page <keyword>language=</keyword><string>"java"</string> <keyword>contentType=</keyword><string>"text/html;charset=UTF-8"</string>
+    <keyword>pageEncoding=</keyword><string>"UTF-8"</string><tagJSP>%&gt;</tagJSP>
+&lt;!DOCTYPE html <text>PUBLIC</text> "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta <keyword>http-equiv=</keyword><string>"Content-Type"</string> <keyword>content</keyword>=<string>"text/html; charset=UTF-8"</string>&gt;
+&lt;title&gt;Демонстрационное приложение - HADR интерфейс&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;<text>Демонстрационное приложение - HADR интерфейс</text>&lt;/h1&gt;
+&lt;p&gt;
+Использование HADR интерфейса
+&lt;/p&gt;
+&lt;jsp:useBean <keyword>id=</keyword><string>'HADRApp'</string> <keyword>scope=</keyword><string>'application'</string> <keyword>class=</keyword><string>'ru.grw.demo.avalanche.DemoApplication'</string>/&gt;
+
+<tagJSP>&lt;%</tagJSP><text> = HADRApp.getInfo(</text><keyword>true</keyword><text>) </text><tagJSP>%&gt;</tagJSP>
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+Экземпляр класса Application с именем HADRApp использует адаптер высокой доступности, который автоматически переключает вызовы
+на другой (резервный) узел при крахе и плановом обслуживании первого узла, при этом обслуживание вызовов может осуществляться
+по разным протоколом на разных узлах.
+</p>
+
+</body>
+</html>

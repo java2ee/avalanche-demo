@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Конфигурационные файлы приложения</title>
+</head>
+<body>
+<h1>Конфигурационные файлы приложения</h1>
+
+<p>
+Пример конфигурационного файла <b>config-avalanche.xml</b> (локальные функции) 
+</p>
+<pre class="displayxml">
+&lt;?xml <keyword>version=</keyword><string>"1.0"</string> <keyword>encoding=</keyword><string>"UTF-8"</string>?&gt;
+&lt;avalanche <keyword>name=</keyword><string>"Demo Application"</string>&gt;
+
+	&lt;function <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoFunction"</string> <keyword>name=</keyword><string>"info-function"</string> /&gt;
+	
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"DemoApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"info-function"</string> /&gt;
+
+	&lt;/application&gt;
+	
+&lt;/avalanche&gt;
+</pre>
+
+<p>
+Пример файла <b>web.xml</b>
+</p>
+<pre class="displayxml">
+&lt;?xml <keyword>version=</keyword><string>"1.0"</string> <keyword>encoding=</keyword><string>"UTF-8"</string>?&gt;
+&lt;web-app <keyword>xmlns:xsi=</keyword><string>"http://www.w3.org/2001/XMLSchema-instance"</string> <keyword>xmlns</keyword>=<string>"http://java.sun.com/xml/ns/javaee"</string> <keyword>xsi:schemaLocation=</keyword><string>"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</string> <keyword>id</keyword>=<string>"WebApp_ID"</string> <keyword>version=</keyword><string>"3.0"</string>&gt;
+
+	&lt;display-name&gt;<text>Demo Avalanche</text>&lt;/display-name&gt;
+	&lt;description&gt;
+		<text>Демонстрационное приложение с использованием framework Avalanche</text>
+	&lt;/description&gt;
+
+	&lt;welcome-file-list&gt;
+		&lt;welcome-file&gt;<text>index.html</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>index.htm</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>index.jsp</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>default.html</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>default.htm</text>&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;<text>default.jsp</text>&lt;/welcome-file&gt;
+	&lt;/welcome-file-list&gt;
+
+	&lt;servlet&gt;
+		&lt;display-name&gt;<text>AvalancheServlet</text>&lt;/display-name&gt;
+		&lt;servlet-name&gt;<text>AvalancheServlet</text>&lt;/servlet-name&gt;
+		&lt;servlet-class&gt;<text>ru.funsys.servlet.http.AvalancheServlet</text>&lt;/servlet-class&gt;
+		&lt;init-param&gt;
+			&lt;param-name&gt;<text>config-avalanche</text>&lt;/param-name&gt;
+			&lt;param-value&gt;<text>${catalina.base}/conf/config-avalanche.xml</text>&lt;/param-value&gt;
+		&lt;/init-param&gt;
+		&lt;init-param&gt;
+			&lt;param-name&gt;<text>config-log4j</text>&lt;/param-name&gt;
+			&lt;param-value&gt;<text>${catalina.base}/conf/config-log4j.xml</text>&lt;/param-value&gt;
+		&lt;/init-param&gt;
+		&lt;load-on-startup&gt;<text>1</text>&lt;/load-on-startup&gt;
+	&lt;/servlet&gt;
+
+	&lt;servlet-mapping&gt;
+		&lt;servlet-name&gt;<text>AvalancheServlet</text>&lt;/servlet-name&gt;
+		&lt;url-pattern&gt;<text>/connector/*</text>&lt;/url-pattern&gt;
+	&lt;/servlet-mapping&gt;
+
+&lt;/web-app&gt;
+</pre>
+
+</body>
+</html>

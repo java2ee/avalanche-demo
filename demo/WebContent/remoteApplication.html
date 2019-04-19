@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Конфигурирование удаленного приложения</title>
+</head>
+<body>
+<h1>Конфигурирование удаленного приложения</h1>
+
+<p>
+Для обеспечения на удаленном сервере вызова методов его функций в его конфигурацию
+необходимо добавить секцию &lt;connector&gt; и в этой секции опубликовать одну или 
+несколько локальных функций при помощи секций &lt;publish&gt;.
+</p>
+
+<p>
+Примеры секций &lt;connector&gt; для различных протоколов с публикацией в них одной
+локальной функции &lt;info-function&gt;, которая будет известна другим системам под
+именем &lt;info&gt;. В атрибутах секций &lt;connector&gt; определяются параметры коннектора,
+в частности для протокола RMI порт и имя по которым удаленные системы могут соединится с
+эти коннектором. Для протокола HTTP достаточно определить только имя коннектора.
+</p>
+<pre class="displayxml">
+	&lt;connector <keyword>class=</keyword><string>"RMIConnector"</string> <keyword>name=</keyword><string>"rmi-connector"</string> <keyword>port=</keyword><string>"23000"</string> &gt;
+
+		&lt;publish <keyword>name=</keyword><string>"info"</string> <keyword>function=</keyword><string>"info-function"</string> /&gt;
+
+	&lt;/connector&gt;
+
+	&lt;connector <keyword>class=</keyword><string>"HTTPConnector"</string> <keyword>name=</keyword><string>"http-connector"</string> &gt;
+
+		&lt;publish <keyword>name=</keyword><string>"info"</string> <keyword>function=</keyword><string>"info-function"</string> /&gt;
+
+	&lt;/connector&gt;
+</pre>
+
+</body>
+</html>

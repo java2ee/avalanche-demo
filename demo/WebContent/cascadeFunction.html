@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Реализация каскадной функции</title>
+</head>
+<body>
+<h1>Реализация каскадной функции</h1>
+
+<p>
+Эта функция демонстрирует реализацию каскадного вызова метода getIngo() класса
+DemoFunction. Каскадный вызов функции имитирует распределение нагрузки между 
+серверами.
+</p>
+
+<p>
+Класс каскадной функции должен наследоваться от класса <b>Application</b>.
+</p>
+
+<p>
+Пример реализации каскадной функции:
+</p>
+<pre class="displaycode">
+<keyword>package</keyword> ru.grw.demo.avalanche;
+
+<keyword>import</keyword> java.util.Hashtable;
+
+<keyword>import</keyword> ru.funsys.avalanche.Application;
+<keyword>import</keyword> ru.funsys.avalanche.AvalancheRemote;
+
+<comment>
+/**
+ * Класс реализации каскадной функции,
+ * имитирующей "балансировку" нагрузки
+ * 
+ * @author Валерий Лиховских
+ *
+ */
+</comment>
+<keyword>public class</keyword> CascadeFunction <keyword>extends</keyword> Application {
+
+	<comment>
+	/**
+	 * Массив адаптеров функций, размещенных в разных копиях приложений. 
+	 */
+	</comment>
+	<keyword>public</keyword> DemoAdapter[] <field>infos</field>;
+	
+	<comment>
+	/**
+	 * Индекс текущего адаптера. После каждого вызова метода индекс увеличивается
+	 * на единицу. Если индекс станет равным размеру массива адаптеров, то его
+	 * значение устанавливается в 0.    
+	 */
+	</comment>
+	<keyword>private int</keyword> <field>index</field> = 0;
+	
+	<comment>
+	/**
+	 * Конструктор класса по умолчанию
+	 */
+	</comment>
+	<keyword>public</keyword> CascadeFunction() {
+	}
+
+	<comment>
+	/**
+	 * Каскадный вызов функции, получение информации об операционной системе.&lt;br&gt;
+	 * &lt;br&gt;
+	 * Реализация этой функции имитирует распределение нагрузки между различными
+	 * узлами. При вызове это метода последовательно перебираются все зарегистрированные
+	 * адаптеры.&lt;br&gt;
+	 * &lt;br&gt;
+	 * Из системных свойств выбираются значения&lt;br&gt;
+	 * &lt;b&gt;os.name&lt;/b&gt; - имя ОС,&lt;br&gt;
+	 * &lt;b&gt;os.version&lt;/b&gt; - версия ОС&lt;br&gt;
+	 * и &lt;b&gt;PID@name&lt;/b&gt; - идентификатор процесса и имя сервера 
+	 * 
+	 * @return именованный список с параметрами ОС
+	 */
+	</comment>
+	<keyword>public</keyword> Hashtable<String, String> getInfo() <keyword>throws</keyword> AvalancheRemote {
+		DemoAdapter info = <field>infos</field>[<field>index</field>];
+		<keyword>synchronized</keyword> (<keyword>this</keyword>) {
+			<field>index</field>++;
+			<keyword>if</keyword> (<field>index</field> == <field>infos</field>.length) <field>index</field> = 0;
+		}
+		<keyword>return</keyword> info.getInfo();
+	}
+	
+}
+</pre>
+
+<p>
+Для подключения класса каскадной функции необходимо добавить в конфигурационный файл секцию:
+</p>
+<pre class="displayxml">
+	&lt;function <keyword>class=</keyword><string>"ru.grw.demo.avalanche.CascadeFunction"</string> <keyword>name=</keyword><string>"cascade-info"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"info-function"</string> /&gt;
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"rmi-info"</string> <keyword>uri=</keyword><string>"rmi-interface/info"</string> /&gt;
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"http-info"</string> <keyword>uri=</keyword><string>"http-interface/info"</string> /&gt;
+
+	&lt;/function&gt;
+</pre>
+<p>
+Где, атрибут <b>name</b> определяет имя функции, под которым экземпляр класса CascadeFunction
+будет известен функциональной системе.
+</p>
+
+
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Конфигурационные файлы приложения (каскадный вызов)</title>
+</head>
+<body>
+<h1>Конфигурационные файлы приложения (каскадный вызов)</h1>
+
+<p>
+Пример конфигурационного файла <b>config-avalanche.xml</b> в котором определено приложение
+локального вызова функции, приложения удаленного вызова функций по протоколам
+RMI и HTTP и приложение каскадного вызова. Удаленные вызовы функций
+производится через интерфейсы, который соединяется с локальными коннекторами. 
+</p>
+<pre class="displayxml">
+&lt;?xml <keyword>version=</keyword><string>"1.0"</string> <keyword>encoding=</keyword><string>"UTF-8"</string>?&gt;
+&lt;avalanche <keyword>name=</keyword><string>"Demo Application"</string>&gt;
+
+	&lt;interface <keyword>name=</keyword><string>"rmi-interface"</string> <keyword>uri=</keyword><string>"rmi://localhost:23000/rmi-connector"</string> /&gt;
+
+	&lt;interface <keyword>name=</keyword><string>"http-interface"</string> <keyword>uri=</keyword><string>"http://localhost:8080/demo/connector/http-connector"</string> /&gt;
+	
+	&lt;function <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoFunction"</string> <keyword>name=</keyword><string>"info-function"</string> /&gt;
+	<font size="+1" >
+	&lt;function <keyword>class=</keyword><string>"ru.grw.demo.avalanche.CascadeFunction"</string> <keyword>name=</keyword><string>"cascade-info"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"info-function"</string> /&gt;
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"rmi-info"</string> <keyword>uri=</keyword><string>"rmi-interface/info"</string> /&gt;
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"http-info"</string> <keyword>uri=</keyword><string>"http-interface/info"</string> /&gt;
+
+	&lt;/function&gt;
+	</font>
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"DemoApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"info-function"</string> /&gt;
+
+	&lt;/application&gt;
+	
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"RMIApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"rmi-interface/info"</string> /&gt;
+
+	&lt;/application&gt;
+	
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"HTTPApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"http-interface/info"</string> /&gt;
+
+	&lt;/application&gt;
+	
+	<font size="+1" >
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"CascadeApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"cascade-info"</string> /&gt;
+
+	&lt;/application&gt;
+	</font>
+	
+	&lt;connector <keyword>class=</keyword><string>"RMIConnector"</string> <keyword>name=</keyword><string>"info-connector"</string> <keyword>port=</keyword><string>"23000"</string> &gt;
+	
+		&lt;publish <keyword>name=</keyword><string>"info"</string> <keyword>function=</keyword><string>"info-function"</string> /&gt;
+		
+	&lt;/connector&gt;
+
+	&lt;connector <keyword>class=</keyword><string>"HTTPConnector"</string> <keyword>name=</keyword><string>"info-connector"</string>  &gt;
+	
+		&lt;publish <keyword>name=</keyword><string>"info"</string> <keyword>function=</keyword><string>"info-function"</string> /&gt;
+		
+	&lt;/connector&gt;
+
+&lt;/avalanche&gt;
+</pre>
+
+</body>
+</html>

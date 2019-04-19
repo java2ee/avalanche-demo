@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Реализация адаптера</title>
+</head>
+<body>
+<h1>Реализация адаптера</h1>
+
+<p>
+Для обеспечения вызовов методов функции необходимо определить адаптер. Определение адаптера сводится
+к декларации интерфейса с методами функции. Декларация методов адаптера обязательно должна содержать
+исключение AvalancheRemote. Нет необходимости декларировать все методы функции. Достаточно определить
+только те методы, которые планируется вызывать с использованием этого адаптера.
+</p>
+
+<p>
+Пример декларации адаптера для функции (класса) DemoFunction:
+</p>
+
+<pre class="displaycode">
+<keyword>package</keyword> ru.grw.demo.avalanche;
+
+<keyword>import</keyword> java.util.Hashtable;
+
+<keyword>import</keyword> ru.funsys.avalanche.AvalancheRemote;
+
+<comment>/**
+ * Определение адаптера 
+ * 
+ * <tag>@author</tag> Валерий Лиховских
+ *
+ */</comment>
+<keyword>public interface</keyword> DemoAdapter {
+
+	<keyword>public</keyword> Hashtable&lt;String, String&gt; getInfo() <keyword>throws</keyword> AvalancheRemote;
+	
+}
+</pre>
+<p>
+Адаптеры используются классами приложений. Для подключения адаптера в приложении необходимо добавить 
+в конфигурационный файл в секцию &lt;application&gt; секцию &lt;adapter&gt; (полностью секция
+&lt;application&gt; приведена в описании "Реализация приложения").
+</p>
+<pre class="displayxml">
+	&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"info-function"</string> /&gt;
+</pre>
+<p>
+Где, атрибут <b>name</b> определяет имя адаптера, под которым экземпляр класса DemoAdapter
+будет известен классу приложения. Атрибут <b>uri</b> определяет имя локальной или удаленной функции.
+Для адресации локальной функции указывается значение атрибута <b>name</b> требуемой функции.
+Для адресации удаленной функции указывается пара значений через символ разделитель "<b>/</b>",
+первое значение определяет значение атрибута <b>name</b> используемого интерфейса, второе определяет
+значение атрибута <b>name</b> удаленной функции, опубликованной в удаленном коннекторе.
+</p>
+
+<p>
+Пример адресации удаленной функции:
+</p>
+<pre class="displayxml">
+	&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> <keyword>uri=</keyword><string>"rmi-interface/info"</string> /&gt;
+</pre>
+
+</body>
+</html>

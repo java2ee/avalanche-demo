@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Реализация приложения</title>
+</head>
+<body>
+<h1>Реализация приложения</h1>
+
+<p>
+Класс приложения предназначен для вызова медов одной или более локальной и/или удаленных функций с
+использованием адаптеров. В этом классе может быть реализовано логика приложения по подготовке
+параметров вызова методов функции и обработки результатов их вызова. 
+</p>
+<p>
+Класс приложения может сам выступать в качестве функции для других реализаций локальных или
+удаленных приложений. 
+</p>
+
+<p>
+Пример реализации приложения DemoApplication:
+</p>
+
+<pre class="displaycode">
+<keyword>package</keyword> ru.grw.demo.avalanche;
+
+<keyword>import</keyword> java.util.Enumeration;
+<keyword>import</keyword> java.util.Hashtable;
+
+<keyword>import</keyword> ru.funsys.avalanche.Application;
+<keyword>import</keyword> ru.funsys.avalanche.AvalancheRemote;
+
+<comment>/**
+ * Демонстрация реализации класса приложения DemoApplication
+ *
+ * <tag>@author</tag> Валерий Лиховских
+ *
+ */</comment>
+<keyword>public class</keyword> DemoApplication <keyword>extends</keyword> Application {
+
+	<comment>/**
+	 * Определение поля для хранения экземпляра адаптера
+	 */</comment>
+	<keyword>public</keyword> DemoAdapter <field>info</field>;
+	
+	<comment>/**
+	 * Конструктор класса по умолчанию 
+	 */</comment>
+	<keyword>public</keyword> DemoApplication() {
+	}
+
+	<comment>/**
+	 * Форматирование результата вызова метода адаптера в зависимости от
+	 * от заданного параметра.
+	 * 
+	 * <tag>@param</tag> html true, если необходим формат HTML, иначе false
+	 * 
+	 * <tag>@return</tag> текс или таблицу HTML с параметрами ОС
+	 */</comment>
+	<keyword>public</keyword> String getInfo(boolean html) {
+		StringBuilder builder = new StringBuilder();
+		<keyword>if</keyword> (html) {
+			builder.append(<string>"&lt;table border=\"1\"&gt;"</string>);
+			builder.append(<string>"&lt;tr&gt;&lt;th&gt;key&lt;/th>&lt;th&gt;value&lt;/th&gt;&lt;/tr&gt;"</string>);
+		}
+		<keyword>try</keyword> {
+			<comment-line>// Вызов метода адаптера</comment-line>
+			Hashtable&lt;String, String&gt; result = info.getInfo();
+			<comment-line>// Форматирование полученного результата</comment-line>
+			<keyword>for</keyword> (Enumeration&lt;String&gt; enumeration = result.keys(); enumeration.hasMoreElements(); ) {
+				String key = enumeration.nextElement();
+				String value = result.get(key);
+				<keyword>if</keyword> (html) {
+					builder.append(<string>"&lt;tr&gt;&lt;td&gt;"</string>).append(key).append(<string>"&lt;/td&gt;&lt;td&gt;"</string>).append(value).append(<string>"&lt;/td&gt;&lt;/tr&gt;"</string>);
+				} <keyword>else</keyword> {
+					builder.append(key).append(<string>": "</string>).append(value).append(<string>"\r\n"</string>);
+				}
+			}
+		} <keyword>catch</keyword> (AvalancheRemote e) {
+			<keyword>if</keyword> (html) {
+				builder.append(<string>"&lt;tr&gt;&lt;td&gt;"</string>).append(<string>"error"</string>).append(<string>"&lt;/td&gt;&lt;td&gt;"</string>).append(e.getLocalizedMessage()).append(<string>"&lt;/td&gt;&lt;/tr&gt;"</string>);
+			} <keyword>else</keyword> {
+				builder.append(<string>"error"</string>).append(<string>": "</string>).append(e.getLocalizedMessage()).append(<string>"\r\n"</string>);
+			}
+		}
+		<keyword>if</keyword> (html) builder.append(<string>"&lt;/table&gt;"</string>);
+		<keyword>return</keyword> builder.toString();
+	}
+	
+}
+</pre>
+<p>
+Для использования реализованного класса приложения в конфигурационный файл необходимо добавить секцию
+&lt;application&gt; с одной или несколькими дочерними секциями &lt;adapter&gt;. Если логика
+реализации класса приложения не предусматривает вызов каких либо методов каких либо функций,
+то дочерние секции &lt;adapter&gt; могут отсутствовать.
+</p>
+<p>
+Пример секции &lt;application&gt;:
+</p>
+<pre class="displayxml">
+	&lt;application <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoApplication"</string> <keyword>name=</keyword><string>"DemoApp"</string> &gt;
+
+		&lt;adapter <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoAdapter"</string> <keyword>name=</keyword><string>"info"</string> uri=<string>"info-function"</string> /&gt;
+
+	&lt;/application&gt;
+</pre>
+<p>
+Для автоматической инициализации значения поля <b>info</b> класса <b>DemoApplication</b>
+необходимо атрибуту <b>name</b> секции <b>adapter</b> присвоить значение имени поля <b>info</b>
+либо определить метод <b>set</b> с параметром типа адаптера. Например, для атрибута <b>name</b>
+секции <b>adapter</b> со значением <b>info</b> в классе <b>Application</b> необходимо определить
+метод 
+</p>
+<pre class="displaycode">
+	<comment>/**
+	 * Установить адаптер класса 
+	 */</comment>
+	<keyword>public</keyword> void setInfo(DemoAdapter info) {
+		this.<field>info</field> = info;
+	}
+</pre>
+
+<p>
+При необходимости, доступ к адаптеру в классе Application можно получить при помощи 
+метода <b>getAdapter(name)</b>, где параметр <b>name</b> определяет имя адаптера в конфигурации
+функционального приложения, например
+</p>
+<pre class="displaycode">
+	<comment-line>// Получить ссылку на адаптер по имени</comment-line>	
+	DemoAdapter adapter = (DemoAdapter) getAdapter(<string>"info"</string>);
+</pre>
+
+
+</body>
+</html>

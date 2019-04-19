@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/demo.css" rel="stylesheet" type="text/css"/>
+<title>Реализация функции</title>
+</head>
+<body>
+<h1>Реализация функции</h1>
+
+<p>
+В качестве функции может быть использован любой класс, имеющий конструктор по умолчанию (без параметров).
+</p>
+
+<p>
+Пример реализации функции:
+</p>
+<pre class="displaycode">
+<keyword>package</keyword> ru.grw.demo.avalanche;
+
+<keyword>import</keyword> java.util.Hashtable;
+
+<comment>/**
+ * Демонстрационный класс реализации функции
+ * 
+ * <tag>@author</tag> Валерий Лиховских
+ */</comment>
+<keyword>public class</keyword> DemoFunction {
+
+	String <field>process</field> = ManagementFactory.getRuntimeMXBean().getName();
+
+	<comment>/**
+	 * Конструктор класса 
+	 */</comment>
+	<keyword>public</keyword> DemoFunction() {
+	}
+
+	<comment>/**
+	 * Получить информацию об операционной системе.
+	 * 
+	 * Из системных свойств выбираются значения
+	 * <b>os.name</b> - имя ОС,
+	 * <b>os.version</b> - версия ОС
+	 * и <b>PID@name</b> - идентификатор процесса и имя сервера 
+	 * 
+	 * <tag>@return</tag> именованный список с параметрами ОС
+	 */</comment>
+	<keyword>public</keyword> Hashtable&lt;String, String&gt; getInfo() {
+		Hashtable&lt;String, String&gt; result = new Hashtable&lt;String, String&gt;();
+		result.put(<string>"os.name"</string>, System.getProperty(<string>"os.name"</string>));
+		result.put(<string>"os.version"</string>, System.getProperty(<string>"os.version"</string>));
+		result.put(<string>"PID@name"</string>, <field>process</field>);
+		<keyword>return</keyword> result;
+	}
+	
+}
+</pre>
+
+<p>
+Для подключения класса функции необходимо добавить в конфигурационный файл секцию:
+</p>
+<pre class="displayxml">
+	&lt;function <keyword>class=</keyword><string>"ru.grw.demo.avalanche.DemoFunction"</string> <keyword>name=</keyword><string>"info-function"</string> /&gt;
+</pre>
+<p>
+Где, атрибут <b>name</b> определяет имя функции, под которым экземпляр класса DemoFunction
+будет известен функциональной системе.
+</p>
+
+
+
+</body>
+</html>
