@@ -18,6 +18,8 @@
 3. [ru.funsys.demo.avalanche.DemoApplication](demo/src/ru/funsys/demo/avalanche/DemoApplication.java) пример реализации класса приложения
 3. [ru.funsys.demo.avalanche.DemoCascadeFunction](demo/src/ru/funsys/demo/avalanche/DemoCascadeFunction.java) пример реализации класса каскадной функции
 
+Конфигурация приложения описана в конфигурационном файле Avalanche [avalanche-config.xml](demo/conf/avalanche-config.xml)
+
 Для успешного выполнения проекта требуется наличие следующих библиотек в ./WebContent/WEB-INF/lib:
 * avalanche-1.0.jar
 * funsys-common-1.0.jar
