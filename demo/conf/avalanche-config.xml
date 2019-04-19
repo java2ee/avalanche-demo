@@ -6,7 +6,7 @@
 	<interface name="http-interface" uri="http://localhost:8080/demo/connector/http-connector" />
 
 	<hadr name="hadr-interface" >
-		<link name="http-karaf" />
+		<link name="http-interface" />
 		<link name="rmi-interface" />
 	</hadr>
 
