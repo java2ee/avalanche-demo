@@ -1,7 +1,7 @@
 # avalanche-demo
 Демонстрационные проекты на основе "Avalanche - application framework for Java"
 
-## Проект demo 
+## Проект [demo](demo) 
 
 Пример реализации простого приложения по модели MVFA (Model - View - Function - Application).
 
