@@ -1,5 +1,5 @@
 /**
- * Нижегородский ИВЦ
+ * 
  */
 package ru.funsys.demo.avalanche;
 
@@ -8,9 +8,9 @@ import java.util.Hashtable;
 import ru.funsys.avalanche.AvalancheRemote;
 
 /**
- * Определение адаптера 
+ * РћРїСЂРµРґРµР»РµРЅРёРµ Р°РґР°РїС‚РµСЂР° 
  * 
- * @author Валерий Лиховских
+ * @author Р’Р°Р»РµСЂРёР№ Р›РёС…РѕРІСЃРєРёС…
  *
  */
 public interface DemoAdapter {
