@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author Валерий Лиховских
+ * @author Р’Р°Р»РµСЂРёР№ Р›РёС…РѕРІСЃРєРёС…
  *
  */
 package ru.funsys.demo.avalanche;
