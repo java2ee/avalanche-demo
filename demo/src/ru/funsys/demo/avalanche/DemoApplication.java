@@ -1,5 +1,5 @@
 /**
- * Нижегородский ИВЦ
+ * 
  */
 package ru.funsys.demo.avalanche;
 
@@ -10,7 +10,7 @@ import ru.funsys.avalanche.Application;
 import ru.funsys.avalanche.AvalancheRemote;
 
 /**
- * @author Валерий Лиховских
+ * @author Р’Р°Р»РµСЂРёР№ Р›РёС…РѕРІСЃРєРёС…
  *
  */
 public class DemoApplication extends Application {
@@ -21,23 +21,23 @@ public class DemoApplication extends Application {
 	private static final long serialVersionUID = 2098562113534946778L;
 	
 	/**
-	 * Определение поля для хранения экземпляра адаптера
+	 * РћРїСЂРµРґРµР»РµРЅРёРµ РїРѕР»СЏ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° Р°РґР°РїС‚РµСЂР°
 	 */
 	private DemoAdapter info;
 	
 	/**
-	 * Конструктор класса по умолчанию 
+	 * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєР»Р°СЃСЃР° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ 
 	 */
 	public DemoApplication() {
 	}
 
 	/**
-	 * Метод вызова метода адаптера и форматирования полученного результата
-	 * в текстовый формат или формат HTML в зависимости от параметра метода.
+	 * РњРµС‚РѕРґ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° Р°РґР°РїС‚РµСЂР° Рё С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёСЏ РїРѕР»СѓС‡РµРЅРЅРѕРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°
+	 * РІ С‚РµРєСЃС‚РѕРІС‹Р№ С„РѕСЂРјР°С‚ РёР»Рё С„РѕСЂРјР°С‚ HTML РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РїР°СЂР°РјРµС‚СЂР° РјРµС‚РѕРґР°.
 	 * 
-	 * @param html true, если необходим формат HTML, иначе false
+	 * @param html true, РµСЃР»Рё РЅРµРѕР±С…РѕРґРёРј С„РѕСЂРјР°С‚ HTML, РёРЅР°С‡Рµ false
 	 * 
-	 * @return текс или таблицу HTML с параметрами ОС
+	 * @return С‚РµРєСЃ РёР»Рё С‚Р°Р±Р»РёС†Сѓ HTML СЃ РїР°СЂР°РјРµС‚СЂР°РјРё РћРЎ
 	 */
 	public String getInfo(boolean html) {
 		StringBuilder builder = new StringBuilder();
@@ -46,7 +46,7 @@ public class DemoApplication extends Application {
 			builder.append("<tr><th>key</th><th>value</th></tr>");
 		}
 		try {
-			// Вызов метода адаптера
+			// Р’С‹Р·РѕРІ РјРµС‚РѕРґР° Р°РґР°РїС‚РµСЂР°
 			Hashtable<String, String> result = info.getInfo();
 			
 			for (Enumeration<String> enumeration = result.keys(); enumeration.hasMoreElements(); ) {
