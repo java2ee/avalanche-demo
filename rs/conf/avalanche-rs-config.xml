@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<avalanche name="RS Demo Application" doc="http://localhost:51492/help/topic/ru.funsys.avalanche.doc/html/api" ext="xhtml">
+
+	<function class="ru.funsys.demo.avalanche.DemoFunction" name="info-function" description="Сведения об узле системы" />
+
+	<application class="ru.funsys.demo.avalanche.DemoApplication" name="rest" service="ru.funsys.demo.avalanche.DemoService">
+		<adapter class="ru.funsys.demo.avalanche.DemoAdapter" name="info" uri="info-function" />
+	</application>
+	 
+</avalanche>
