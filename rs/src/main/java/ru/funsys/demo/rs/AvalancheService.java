@@ -14,19 +14,29 @@ import ru.funsys.demo.avalanche.DemoService;
 /**
  * @author Валерий Лиховских
  *
+ * Инициализация класса Application спецификации JAX-RS 2.0 экземплярами классов 
+ * реализованных сервисов, описанных в конфигурации Avalanche.
+ *
+ * Экземпляр этого класса создается в сервлете org.glassfish.jersey.servlet.ServletContainer
+ * см. web.xml, параметр javax.ws.rs.Application
  */
 public class AvalancheService extends Application {
 
-    Set<Object> singletons = new HashSet<Object>();
+	private Set<Object> singletons;
 
-	public AvalancheService() {
-		Object singleton = Avalanche.getAvalanche("RS Demo Application").getApplication("rest").getService();
-		if (singleton != null) singletons.add(singleton);
+	public JsonApplication() throws Exception {
+		Context initContext = new InitialContext();
+		// JNDI имя экземпляра Avalanche определяется в конфигурации контекста (в секции <context>)
+		// Для Tomcat полное JNDI имя - "java:comp/env/avalanche/rp" 
+		Avalanche avalanche = (Avalanche) initContext.lookup(Avalanche.JNDI_CONTEXT + "/avalanche/rp");
+		// Получить список реализованных сервисов
+		singletons = avalanche.getSingletons();
 	}
 
-    @Override
-    public Set<Object> getSingletons() {
-    	return singletons;
-    }
-    
+	@Override
+	public Set<Object> getSingletons() {
+	    	if (singletons == null) return super.getSingletons();
+	    	else return singletons;
+	}
+
 }

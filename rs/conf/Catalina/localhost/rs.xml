@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="rs" path="/rs" reloadable="true">
+
+        <Resource name="avalanche/rp" auth="Container"
+                  type="ru.funsys.avalanche.Avalanche"
+                  factory="org.apache.naming.factory.BeanFactory" />
+
+</Context>
