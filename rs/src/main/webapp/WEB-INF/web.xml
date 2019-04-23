@@ -16,9 +16,9 @@
         <param-value>${catalina.base}/conf/avalanche-rs-log4j.xml</param-value>
       </init-param>
       <init-param>
-			  <param-name>avalanche.jndi</param-name>
-			  <param-value>avalanche/rs</param-value>
-		  </init-param>
+         <param-name>avalanche.jndi</param-name>
+         <param-value>avalanche/rs</param-value>
+      </init-param>
       <load-on-startup>1</load-on-startup>
       <multipart-config>
         <!-- 50MB max -->
