@@ -27,8 +27,8 @@ public class AvalancheService extends Application {
 	public JsonApplication() throws Exception {
 		Context initContext = new InitialContext();
 		// JNDI имя экземпляра Avalanche определяется в конфигурации контекста (в секции <context>)
-		// Для Tomcat полное JNDI имя - "java:comp/env/avalanche/rp" 
-		Avalanche avalanche = (Avalanche) initContext.lookup(Avalanche.getJndiContext() + "/avalanche/rp");
+		// Для Tomcat полное JNDI имя - "java:comp/env/avalanche/rs" 
+		Avalanche avalanche = (Avalanche) initContext.lookup(Avalanche.getJndiContext() + "/avalanche/rs");
 		// Получить список реализованных сервисов
 		singletons = avalanche.getSingletons();
 	}
