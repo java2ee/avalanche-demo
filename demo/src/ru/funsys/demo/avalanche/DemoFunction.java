@@ -3,6 +3,8 @@ package ru.funsys.demo.avalanche;
 import java.lang.management.ManagementFactory;
 import java.util.Hashtable;
 
+import org.apache.logging.log4j.Logger;
+
 /**
  * Демонстрационный класс реализации функции
  * 
@@ -10,6 +12,19 @@ import java.util.Hashtable;
  */
 public class DemoFunction {
 
+	/**
+	 * Для подключения вывода возникающих событий в лог достаточно продекларировать 
+	 * поле класса logger. По умолчанию будет установлен логгер родительского элемента
+	 * в файле конфигурации. Если логгер не установлен ни у одного из родительских
+	 * элементов конфигурации, то используется <b>root</b> логгер системы регистрации
+	 * событий log4j.
+	 * </br></br>
+	 * Для определения вывода в другой логгер необходимо определить значение
+	 * атрибута <b>logger</b> в конфигурации функции, указав имя требуемого логгера
+	 * из файла конфигурации log4j.  
+	 */
+	private Logger logger;
+	
 	/**
 	 * Конструктор класса
 	 */
@@ -40,7 +55,7 @@ public class DemoFunction {
 	 * действия для функции 
 	 */
 	public void init() {
-		System.out.println("Init DemoFunction");
+		logger.info("Init DemoFunction");
 	}
 	
 	/**
@@ -49,7 +64,7 @@ public class DemoFunction {
 	 * освобождения ресурсов. 
 	 */
 	public void done() {
-		System.out.println("Done DemoFunction");
+		logger.info("Done DemoFunction");
 	}
 	
 	
