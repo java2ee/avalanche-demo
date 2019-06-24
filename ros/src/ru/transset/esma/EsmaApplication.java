@@ -20,6 +20,20 @@ import ru.transinfocom.erto.suik.service.LoadDataRequest;
  */
 public class EsmaApplication extends Application {
 
+	class Counter {
+	
+		int counter = 0;
+		
+		int getCounter() {
+			return counter;
+		}
+		
+		void increment() {
+			counter++;
+		}
+		
+	}
+	
 	/**
 	 * 
 	 */
@@ -49,11 +63,6 @@ public class EsmaApplication extends Application {
 	private int max;
 	
 	/**
-	 * Счетчик завершившихся потоков 
-	 */
-	private int counter = 0;
-	
-	/**
 	 * Добавляет обрабатываемый тип данных
 	 * 
 	 * @param name имя типа
@@ -67,10 +76,6 @@ public class EsmaApplication extends Application {
 	
 	public int getMax() {
 		return max;
-	}
-	
-	private boolean isWait() {
-		return counter < types.size(); 
 	}
 	
 	/**
@@ -93,17 +98,19 @@ public class EsmaApplication extends Application {
 			return;
 		}
 		
+		// Счетчик завершившихся потоков 
+		Counter counter = new Counter();
 		for (Enumeration<TypeData> enumeration = types.elements(); enumeration.hasMoreElements(); ) {
 			TypeData typeData = enumeration.nextElement();
 			Thread thread = new Thread(group, new Runnable() {
 				public void run() {
-					execute(typeData, request);
+					execute(counter, typeData, request);
 				}
 			}, Thread.currentThread().getName() + '-' + typeData.getName());
 			thread.start();
 		}
 
-		while (isWait()) {
+		while (counter.getCounter() < types.size()) {
 			synchronized (this) {
 				try {
 					wait(1500L);
@@ -126,7 +133,7 @@ public class EsmaApplication extends Application {
 	 * @param typeData сохраняемый тип данных
 	 * @param request распарсенная структура массивов сохраняемых данных
 	 */
-	private void execute(TypeData typeData, LoadDataRequest request) {
+	private void execute(Counter counter, TypeData typeData, LoadDataRequest request) {
 		logger.info("Start: " + typeData.getName());
 		String name  = "get"  + toUpperFirstChar(typeData.getName());
 		Class<?> classRequest = request.getClass();
@@ -183,11 +190,11 @@ public class EsmaApplication extends Application {
 		} catch (Exception e) {
 			logger.error("Error for type " + typeData.getName(), e);
 		}
-		logger.info("Stop: " + typeData.getName());
-		counter++;
+		counter.increment();
 		synchronized (this) {
 			notifyAll();
 		}
+		logger.info("Stop: " + typeData.getName());
 	}
 	
 }
